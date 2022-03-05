@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Arrays;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     static final String TAG = MainActivity.class.getSimpleName();
     static final String BASE_URL = "https://api.themoviedb.org/3/";
     static Retrofit retrofit = null;
-    final static String API_KEY = "YOUR_API_KEY";
+    final static String API_KEY = "56073b1c215973cb3fdc8c4979dd0ae8";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +55,11 @@ public class MainActivity extends AppCompatActivity {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
+
         MovieApiService movieApiService = retrofit.create(MovieApiService.class);
         Call<Movie> call = movieApiService.getMovie(603, API_KEY);
+
+        System.out.println("here: start");
         call.enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
@@ -67,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                         response.body().getVoteAverage().toString(),
                         response.body().getOverview()
                 };
+                System.out.println("here: "+ Arrays.toString(values));
                 TextView tv;
                 for (int i=0; i < ids.length; i++) {
                     tv = findViewById(ids[i]);
